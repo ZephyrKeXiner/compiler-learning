@@ -6,5 +6,5 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(clox src/main.cpp
-  src/chain.h
-  src/chain.cpp)
+  src/common.h
+  src/chunk.h)
