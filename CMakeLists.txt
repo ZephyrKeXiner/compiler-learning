@@ -7,4 +7,5 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(clox src/main.cpp
   src/common.h
-  src/chunk.h)
+  src/chunk.h
+  src/memory.h)
