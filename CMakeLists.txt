@@ -10,10 +10,12 @@ add_executable(clox src/main.cpp)
 target_sources(clox PRIVATE
   src/chunk.cpp
   src/memory.cpp
+  src/debug.cpp
 )
 
 target_sources(clox PRIVATE
   src/common.h
   src/chunk.h
   src/memory.h
+  src/debug.h
 )
