@@ -1,3 +1,6 @@
+#include <cstdio>
+#include <cstdlib>
+
 #include "common.h"
 #include "chunk.h"
 
@@ -65,4 +68,27 @@ int getLine(const Chunk* chunk, int offset) {
   }
 
   return -1;
+}
+
+void writeConstant(Chunk* chunk, Value value, int line) {
+  constexpr int maxShortConstant = UINT8_MAX;
+  constexpr int maxLongConstant = 0xffffff;
+
+  if (chunk->constants.count > maxLongConstant) {
+    fprintf(stderr, "Too many constants in one chunk.\n");
+    exit(1);
+  }
+
+  int constant = addConstant(chunk, value);
+
+  if (constant <= maxShortConstant) {
+    writeChunk(chunk, OP_CONSTANT, line);
+    writeChunk(chunk, static_cast<uint8_t>(constant), line);
+    return;
+  }
+
+  writeChunk(chunk, OP_CONSTANT_LONG, line);
+  writeChunk(chunk, static_cast<uint8_t>((constant >> 16) & 0xff), line);
+  writeChunk(chunk, static_cast<uint8_t>((constant >> 8) & 0xff), line);
+  writeChunk(chunk, static_cast<uint8_t>(constant & 0xff), line);
 }
