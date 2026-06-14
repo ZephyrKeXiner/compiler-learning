@@ -8,14 +8,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(clox src/main.cpp)
 
 target_sources(clox PRIVATE
-  src/chunk.cpp
-  src/memory.cpp
-  src/debug.cpp
+  src/include/chunk.cpp
+  src/include/memory.cpp
+  src/include/debug.cpp
+  src/include/value.cpp
 )
 
 target_sources(clox PRIVATE
-  src/common.h
-  src/chunk.h
-  src/memory.h
-  src/debug.h
+  src/include/common.h
+  src/include/chunk.h
+  src/include/memory.h
+  src/include/debug.h
+  src/include/value.h
 )
