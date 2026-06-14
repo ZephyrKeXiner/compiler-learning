@@ -1,12 +1,16 @@
-#include "include/common.h"
-#include "include/chunk.h"
-#include "include/debug.h"
-#include "include/value.h"
+#include "common.h"
+#include "chunk.h"
+#include "debug.h"
+#include "value.h"
+#include "vm.h"
 
 int main (int argc, const char* argv []) {
   Chunk chunk;
   initChunk(&chunk);
+  VM vm(&chunk);
+
   writeConstant(&chunk, 1.2, 123);
+  writeConstant(&chunk, 352, 123);
   writeChunk(&chunk, OP_RETURN, 123);
 
   disassembleChunk(&chunk, "test_chunk");

@@ -21,7 +21,7 @@ static int constantInstruction(const char* name, Chunk* chunk,
 
 static int constantLongInstruction(const char* name, Chunk* chunk,
                                    int offset) {
-  int constant = (chunk->code[offset + 1] << 16) |
+  uint32_t constant = (chunk->code[offset + 1] << 16) |
                  (chunk->code[offset + 2] << 8) |
                  chunk->code[offset + 3];
 
