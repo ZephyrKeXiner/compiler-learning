@@ -1,4 +1,5 @@
 #include <cstdio>
+#include <string>
 
 #include "debug.h"
 
@@ -23,7 +24,16 @@ int disassembleInstruction(Chunk* chunk, int offset) {
   {
   case OP_RETURN:
     return simpleInstruction("OP_RETURN", offset);
-  
+
+  case OP_CONSTANT: {
+      offset = simpleInstruction("OP_CONSTANT", offset);
+      printf("%04d ", offset);
+      Value constant = chunk->constants.values[chunk->code[offset]];
+      std::string s = std::to_string(constant);
+      const char* p = s.c_str();
+      return simpleInstruction(p, offset);
+    }
+
   default:
     printf("Unknown opcode %d\n", instruction);
     return offset + 1;
