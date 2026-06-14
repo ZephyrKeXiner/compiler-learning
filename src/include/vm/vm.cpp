@@ -1,5 +1,6 @@
 #include "common.h"
 #include "vm.h"
+#include "debug.h"
 #include <cstdio>
 
 VM::VM(Chunk* chunk)
@@ -39,6 +40,10 @@ Value VM::readConstantLong() {
 InterpretResult VM::run() {
   for (;;)
   {
+    #ifdef DEBUG_TRACE_EXECUTION
+      disassembleInstruction(chunk, static_cast<int>(ip - chunk->code));
+    #endif
+
     uint8_t instruction;
     switch (instruction = VM::readByte())
     {

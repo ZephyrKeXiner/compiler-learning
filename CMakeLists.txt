@@ -12,6 +12,8 @@ target_include_directories(clox PRIVATE
   src/include/vm
 )
 
+target_compile_definitions(clox PRIVATE DEBUG_TRACE_EXECUTION)
+
 target_sources(clox PRIVATE
   src/include/chunk.cpp
   src/include/memory.cpp
