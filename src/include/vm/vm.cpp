@@ -5,15 +5,16 @@
 
 VM::VM(Chunk* chunk)
     : chunk(chunk) {
+    VM::resetStack();
 }
 
 VM::~VM() {
 
 }
 
-InterpretResult VM::interpret(Chunk* chunk) {
-  VM::ip = VM::chunk->code;
-  return VM::run();
+InterpretResult VM::interpret() {
+  ip = this->chunk->code;
+  return run();
 }
 
 uint8_t VM::readByte() {
@@ -22,6 +23,19 @@ uint8_t VM::readByte() {
 
 Value VM::readConstant() {
   return chunk->constants.values[readByte()];
+}
+
+void VM::resetStack() {
+  stackTop = stack;
+}
+
+void VM::push(Value value) {
+  *stackTop = value;
+  stackTop++;
+}
+
+Value VM::pop() {
+  return *(--stackTop);
 }
 
 uint32_t VM::readConstantLongIndex() {
@@ -41,27 +55,55 @@ InterpretResult VM::run() {
   for (;;)
   {
     #ifdef DEBUG_TRACE_EXECUTION
+      printf("          ");
+      for (Value* slot = stack; slot < stackTop; slot++) {
+        printf("[ ");
+        printValue(*slot);
+        printf(" ]");
+      }
+      printf("\n");
       disassembleInstruction(chunk, static_cast<int>(ip - chunk->code));
     #endif
 
     uint8_t instruction;
-    switch (instruction = VM::readByte())
-    {
-    case OP_RETURN:
-      return INTERPRET_OK;
-    
+    switch (instruction = readByte())
+    {    
     case OP_CONSTANT: {
       Value constant = readConstant();
-      printValue(constant);
-      printf("\n");
+      push(constant);
       break;
     }
 
     case OP_CONSTANT_LONG: {
       Value constant = readConstantLong();
-      printValue(constant);
+      push(constant);
       break;
     }
+
+    case OP_NEGATE: 
+      push(-pop());
+      break;
+
+    case OP_ADD:
+      binaryOp([] (Value a, Value b) { return a + b; });
+      break;
+
+    case OP_SUBTRACT:
+      binaryOp([] (Value a, Value b) { return a - b; });
+      break;
+
+    case OP_MULTIPLY:
+      binaryOp([] (Value a, Value b) { return a * b; });
+      break;
+    
+    case OP_DIVIDE:
+      binaryOp([] (Value a, Value b) { return a / b; });
+      break;
+    
+    case OP_RETURN:
+      printValue(pop());
+      printf("\n");
+      return INTERPRET_OK;
 
     default:
       break;
