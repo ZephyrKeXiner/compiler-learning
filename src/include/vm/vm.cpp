@@ -12,7 +12,7 @@ VM::~VM() {
 
 }
 
-InterpretResult VM::interpret() {
+InterpretResult VM::interpret(const char* source) {
   ip = this->chunk->code;
   return run();
 }

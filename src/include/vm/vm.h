@@ -42,7 +42,7 @@ private:
 public:
   explicit VM(Chunk* chunk);
   ~VM();
-  InterpretResult interpret();
+  InterpretResult interpret(const char* source);
 };
 
 #endif
