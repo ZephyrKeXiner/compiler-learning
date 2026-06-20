@@ -1,6 +1,8 @@
 #include "common.h"
 #include "vm.h"
 #include "debug.h"
+#include "compiler.h"
+
 #include <cstdio>
 
 VM::VM(Chunk* chunk)
@@ -13,8 +15,8 @@ VM::~VM() {
 }
 
 InterpretResult VM::interpret(const char* source) {
-  ip = this->chunk->code;
-  return run();
+  compile(source);
+  return INTERPRET_OK;
 }
 
 uint8_t VM::readByte() {
