@@ -59,7 +59,7 @@ static void runFile(const char* path, VM& vm) {
   if (result == INTERPRET_RUNTIME_ERROR) exit(70);
 }
 
-int main (int argc, const char* argv []) {
+int main(int argc, const char* argv []) {
   Chunk chunk;
   initChunk(&chunk);
   VM vm(&chunk);
